@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import './Hits.scss';
 
 function Hits() {
+
+	const [hits, setHits] = useState([]);
+
+	useEffect(() => {
+		fetch('https://netcraft2.s3-eu-west-1.amazonaws.com/hits.json')
+			.then(res => res.json())
+			.then(res => setHits(res))
+	}, []);
+
 	return (
 		<div className="Hits">
 			<h3>Hits:</h3>
@@ -10,7 +20,9 @@ function Hits() {
 				<code>https://netcraft2.s3-eu-west-1.amazonaws.com/hits.json</code>
 			</p>
 			<ul>
-
+				{hits.map((hit, index) => {
+					return <li key={index}>{hit.title}</li>
+				})}
 			</ul>
 		</div>
 	)
